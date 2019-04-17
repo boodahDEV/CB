@@ -1,0 +1,25 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "back-end",
+  "main": "app.js",
+  "scripts": {
+    "test": "TEST"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boodahDEV/CB.git"
+  },
+  "keywords": [
+    "back"
+  ],
+  "author": "\u001bq@boodah",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/boodahDEV/CB/issues"
+  },
+  "homepage": "https://github.com/boodahDEV/CB#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
