@@ -13,7 +13,7 @@
        $ DEBUG=back-end:* npm start
       ```
     - Linux o MacOs
-      ```Script
-      $ SET DEBUG=back-end:* & npm start
-      ```
+     ```Script
+     $ SET DEBUG=back-end:* & npm start
+     ```
              
