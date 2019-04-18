@@ -14,6 +14,6 @@
       ```
     - Linux o MacOs
      ```Script
-     $ SET DEBUG=back-end:* & npm start
+      $ SET DEBUG=back-end:* & npm start
      ```
              
