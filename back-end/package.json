@@ -6,8 +6,8 @@
     "start": "node ./bin/www"
   },
   "repository": {
-	"type": "git",
-	"url": "https://github.com/boodahDEV/CB"
+    "type": "git",
+    "url": "https://github.com/boodahDEV/CB"
   },
   "author": "boodah",
   "license": "Apache-2.0",
