@@ -10,10 +10,10 @@
   * Para levantar o ejecutar el Back-End en su version 0.0.1 en, se utiliza el siguiente comando:
      - Windows
       ```Script
-       $ DEBUG=back-end:* npm start
+       $ SET DEBUG=back-end:* & npm start
       ```
     - Linux o MacOs
      ```Script
-      $ SET DEBUG=back-end:* & npm start
+       $ DEBUG=back-end:* npm start
      ```
              
