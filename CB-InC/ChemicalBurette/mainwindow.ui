@@ -10,8 +10,13 @@
     <height>664</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Monospace</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>ChemicalBurtette</string>
   </property>
   <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
