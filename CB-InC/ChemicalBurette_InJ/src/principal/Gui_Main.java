@@ -6,6 +6,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
 import javax.swing.border.MatteBorder;
+
+import Animacion.Animacion;
+
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
@@ -18,13 +21,13 @@ public class Gui_Main extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, title;
 	public JButton exit, logo;
-	public int x,y;
+	public int x,y; public boolean band=true;
 	/*****************************************************************/
 	public static void main(String[] args) {
 					Gui_Main frame = new Gui_Main();
 					frame.setVisible(true);
 	}
-	/****************************************************************8*/
+	/*****************************************************************/
 	public Gui_Main() {
 		setUndecorated(true);
 		setLocationRelativeTo(null);
@@ -39,7 +42,6 @@ public class Gui_Main extends JFrame {
 		contentPane.setLayout(null);
 		
 		/*########################################################################################################################*/
-		/*########################################################################################################################*/
 		JPanel dashboard = new JPanel();																	//#PANEL DESLIZANTE
 		dashboard.setBackground(new Color(19,179,201));
 		dashboard.setBounds(1, 1, 190, 508);
@@ -47,6 +49,17 @@ public class Gui_Main extends JFrame {
 		dashboard.setLayout(null);
 		
 			logo = new JButton(" ");
+			logo.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if(band) {
+						Animacion.mover_izquierda(1, -144, 1, 1, dashboard);
+						band=false;
+					}else{
+						Animacion.mover_derecha(-144, 1, 1, 1, dashboard);
+						band=true;
+					}
+				}
+			});
 			logo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			logo.setHorizontalTextPosition(SwingConstants.CENTER);
 			logo.setIconTextGap(-10);
@@ -59,7 +72,7 @@ public class Gui_Main extends JFrame {
 			logo.setBounds(145, -2, 40, 43);
 			dashboard.add(logo);
 		/*########################################################################################################################*/
-		title = new JPanel();																		//#PANEL DEL TITULO
+		title = new JPanel();																			//#PANEL DEL TITULO
 		title.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent a) {
 				x = a.getX(); y = a.getY();
@@ -72,12 +85,14 @@ public class Gui_Main extends JFrame {
 				setLocation(xx-x,yy-y);
 			}
 		});
-		title.setBackground(new Color(255, 255, 255));
+		title.setBackground(new Color(129, 229, 230));
 		title.setBounds(1, 1, 848, 25);
 		contentPane.add(title);
 		title.setLayout(null);
 		
 			exit = new JButton(" ");
+			exit.setRolloverSelectedIcon(new ImageIcon(Gui_Main.class.getResource("/recursos/exit_11.png")));
+			exit.setRolloverIcon(new ImageIcon(Gui_Main.class.getResource("/recursos/exit_11.png")));
 			exit.setBorder(null);
 			exit.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -92,9 +107,10 @@ public class Gui_Main extends JFrame {
 			exit.setFocusable(false);
 			exit.setContentAreaFilled(false);
 			exit.setBorderPainted(false);
-			exit.setBounds(810, 2, 36, 22);
+			exit.setBounds(810, 0, 36, 22);
 			title.add(exit);
-		JPanel status = new JPanel();																		//PANEL DE ESTATU
+		/*########################################################################################################################*/
+		JPanel status = new JPanel();																	//PANEL DE ESTATU
 		status.setBackground(new Color(255, 255, 255));
 		status.setBounds(190, 484, 659, 25);
 		contentPane.add(status);
