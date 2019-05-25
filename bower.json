@@ -1,0 +1,13 @@
+{
+  "name": "ChemicalBurette",
+  "version": "0.0.1",
+  "author": "@boodah, @HarryALvarado, @beatrizjg",
+  "license": "Apache 2.0",
+  "dependencies": {
+    "angular": "~1.4.3",
+    "font-awesome": "latest",
+    "lodash": "2.4.1",
+    "normalize-css": "latest",
+    "requirejs": "latest"
+  }
+}
