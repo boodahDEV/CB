@@ -62,7 +62,72 @@
 <!-- ============================================================== -->
 <!-- End Wrapper -->
 <!-- ============================================================== -->
-<section id="wrapper" class="login-register">
+
+<!-- <div id="particles-js"></div>
+
+<script src="assets/animate/particles.js"></script>
+<script src="assets/animate/js/app.js"></script>
+
+<script src="assets/animate/js/lib/stats.js"></script>
+<script>
+  var count_particles, stats, update;
+  stats = new Stats;
+  stats.setMode(0);
+  stats.domElement.style.position = 'absolute';
+  stats.domElement.style.left = '0px';
+  stats.domElement.style.top = '0px';
+  document.body.appendChild(stats.domElement);
+  count_particles = document.querySelector('.js-count-particles');
+  update = function() {
+    stats.begin();
+    stats.end();
+    if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+      count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+    }
+    requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+</script> -->
+
+
+<!-- <link rel="stylesheet" media="screen" href="assets/animate/css/style.css"> -->
+<section id="wrapper" class="login-register bg-black">
+
+  <!-- count particles -->
+  <div class="count-particles">
+    <span class="js-count-particles">--</span> particles
+  </div>
+
+  <!-- particles.js container -->
+  <div id="particles-js"></div>
+
+  <!-- scripts -->
+  <script src="assets/animate/particles.js"></script>
+  <script src="assets/animate/js/app.js"></script>
+
+  <!-- stats.js -->
+  <script src="assets/animate/js/lib/stats.js"></script>
+  <script>
+    var count_particles, stats, update;
+    stats = new Stats;
+    stats.setMode(0);
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.left = '0px';
+    stats.domElement.style.top = '0px';
+    document.body.appendChild(stats.domElement);
+    count_particles = document.querySelector('.js-count-particles');
+    update = function() {
+      stats.begin();
+      stats.end();
+      if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+        count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+      }
+      requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+  </script>
+
+
     <div class="login-box card">
         <div class="card-body">
             <form ngNativeValidate #f="ngForm" class="form-horizontal form-material" (ngSubmit)="ingresar(f)">
@@ -105,7 +170,7 @@
                 <div class="form-group ">
                     <div class="col-xs-12">
                         <h3>Recordar Contraseña</h3>
-                        <p class="text-muted">Escriba su correo electronico y siga los pasos. </p>
+                        <p class="text-muted">Escriba su correo electronico y siga los pasos.</p>
                     </div>
                 </div>
                 <div class="form-group ">
