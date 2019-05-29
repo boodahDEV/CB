@@ -24,8 +24,12 @@ Login register and recover password Page
   background-position: center center;
   height: 100%;
   width: 100%;
-  padding: 10% 0;
-  position: fixed; }
+  padding: 3% 0;
+  position: fixed;
+  /* margin-bottom: 100px;
+  margin-top: 10px; */
+
+ }
 
 .login-box {
   width: 400px;

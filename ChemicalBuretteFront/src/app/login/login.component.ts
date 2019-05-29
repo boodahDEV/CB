@@ -41,17 +41,17 @@ export class LoginComponent implements OnInit {
   //   });
   // }
 
-  attachSignin(element) {
-    this.auth2.attachClickHandler(element, {}, (googleUser) => {
-      let token = googleUser.getAuthResponse().id_token;
-      console.log(token);
-      this._usuarioService.loginGoogle(token)
-        .subscribe(resp => {
-          console.log('resp Google: ', resp);
-          window.location.href = '#/dashboard';
-        });
-    })
-  }
+  // attachSignin(element) {
+  //   this.auth2.attachClickHandler(element, {}, (googleUser) => {
+  //     let token = googleUser.getAuthResponse().id_token;
+  //     console.log(token);
+  //     this._usuarioService.loginGoogle(token)
+  //       .subscribe(resp => {
+  //         console.log('resp Google: ', resp);
+  //         window.location.href = '#/dashboard';
+  //       });
+  //   })
+  // }
 
   ingresar(forma: NgForm) {
     if (forma.invalid) {

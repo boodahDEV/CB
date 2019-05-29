@@ -11,10 +11,19 @@ import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 })
 export class UsuarioService {
 
-  usuario: Usuario;
+  usuario: Usuario = {
+    nombre: "Test1",
+    email: "test1@gmail.com",
+    password: '123456',
+  };
   token: string;
   menu: any[] = [];
   constructor(public http: HttpClient, public router: Router, public _subirArchivoService: SubirArchivoService) {
+    // this.usuario = {
+    //   nombre: "Test1",
+    //   email: "test1@gmail.com",
+    //   password: '123456',
+    // }
     console.log('Servicios de Usuario, Listo');
     this.cargarStorage();
   }
@@ -70,14 +79,14 @@ export class UsuarioService {
     this.router.navigate(['/login']);
   }
 
-  loginGoogle(token: string) {
-    let url = URL_SERVICIOS + '/login/google';
-    return this.http.post(url, { token })
-      .pipe(map((resp: any) => {
-        this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
-        return true;
-      }));
-  }
+  // loginGoogle(token: string) {
+  //   let url = URL_SERVICIOS + '/login/google';
+  //   return this.http.post(url, { token })
+  //     .pipe(map((resp: any) => {
+  //       this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
+  //       return true;
+  //     }));
+  // }
 
   login(usuario: Usuario, recordar: boolean = false) {
     if (recordar) {

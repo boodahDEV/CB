@@ -11,16 +11,20 @@
                 <!-- Logo icon --><b>
                     <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                     <!-- Dark Logo icon -->
-                    <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                    <!-- <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo" /> -->
                     <!-- Light Logo icon -->
-                    <img src="assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />
+                    <!-- <img src="assets/images/logo-light-icon.png" alt="homepage" class="light-logo" /> -->
+                    <img src="assets/elLogo.png" width="45" height="45" alt="homepage">
                 </b>
                 <!--End Logo icon -->
                 <!-- Logo text --><span>
                  <!-- dark Logo text -->
-                 <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" />
+                 <img src="assets/images/logo-white-recorte.png" alt="homepage" class="dark-logo" width="140" height="35"/>
+                 <!-- <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" /> -->
+
                  <!-- Light Logo text -->
-                 <img src="assets/images/logo-light-text.png" class="light-logo" alt="homepage" /></span> </a>
+                 <img src="assets/images/logo-black-recorte.png" class="light-logo" alt="homepage" width="140" height="35"/></span> </a>
+                 <!-- <img src="assets/images/logo-light-text.png" class="light-logo" alt="homepage" /></span> </a> -->
         </div>
         <!-- ============================================================== -->
         <!-- End Logo -->
@@ -107,12 +111,17 @@
                 <!-- Profile -->
                 <!-- ============================================================== -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img [src]="usuario.img | imagen" alt="user" class="profile-pic" /></a>
+                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <!-- <img [src]="usuario.img | imagen" alt="user" class="profile-pic"/> -->
+                      <!-- <img src="" alt=""> -->
+                      <i class="far fa-user"></i>
+                    </a>
                     <div class="dropdown-menu dropdown-menu-right animated fadeIn">
                         <ul class="dropdown-user">
                             <li>
                                 <div class="dw-user-box" align="center">
-                                    <div class="u-img"><img [src]="usuario.img | imagen" alt="user"></div>
+                                    <!-- <div class="u-img"><img [src]="usuario.img | imagen" alt="user"></div> -->
+                                    <i class="ti-user"></i>
                                     <div class="u-text">
                                         <h4>{{usuario.nombre}}</h4>
                                         <p class="text-muted">{{usuario.email}}</p><a routerLink="/perfil" class="btn btn-rounded btn-danger btn-sm">Ver Perfil</a></div>
@@ -120,8 +129,8 @@
                             </li>
                             <li role="separator" class="divider"></li>
                             <li><a routerLinkActive="active" routerLink="/perfil"><i class="ti-user"></i> My Profile</a></li>
-                            <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>
-                            <li><a href="#"><i class="ti-email"></i> Inbox</a></li>
+                            <!-- <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>
+                            <li><a href="#"><i class="ti-email"></i> Inbox</a></li> -->
                             <li role="separator" class="divider"></li>
                             <li><a routerLinkActive="active" routerLink="/account-settings"><i class="ti-settings"></i> Account Setting</a></li>
                             <li role="separator" class="divider"></li>

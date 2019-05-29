@@ -15,7 +15,12 @@ export class HeaderComponent implements OnInit {
   constructor(public _usuarioService: UsuarioService, public router: Router) { }
 
   ngOnInit() {
-    this.usuario = this._usuarioService.usuario;
+    // this.usuario = this._usuarioService.usuario;
+    this.usuario = {
+      nombre: "Test1",
+      email: "test1@gmail.com",
+      password: '123456',
+    }
   }
 
   buscar(termino: string) {

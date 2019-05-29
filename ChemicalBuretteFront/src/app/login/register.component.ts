@@ -6,13 +6,26 @@ import { Usuario } from '../models/usuario.model';
 import { Router } from '@angular/router';
 
 declare function init_plugins();
-
+export interface Food {
+  value: string;
+  viewValue: string;
+}
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
+  // styles: [`
+  // .login-register {
+  //   margin-bottom: 100px;
+  // }
+  // `]
   styleUrls: ['./login.component.css']
 })
 export class RegisterComponent implements OnInit {
+  foods: Food[] = [
+    { value: 'steak-0', viewValue: 'Steak' },
+    { value: 'pizza-1', viewValue: 'Pizza' },
+    { value: 'tacos-2', viewValue: 'Tacos' }
+  ];
 
   forma: FormGroup;
 
@@ -41,6 +54,7 @@ export class RegisterComponent implements OnInit {
     this.forma = new FormGroup({
       nombre: new FormControl(null, Validators.required),
       correo: new FormControl(null, [Validators.required, Validators.email]),
+      // aniolectivo: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required),
       password2: new FormControl(null, Validators.required),
       condiciones: new FormControl(false)

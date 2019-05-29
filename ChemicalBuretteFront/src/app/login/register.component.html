@@ -1,11 +1,13 @@
 <!-- ============================================================== -->
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
-<section id="wrapper" class="login-register login-sidebar" style="background-image:url(../assets/images/background/login-register.jpg);">
-    <div class="login-box card">
+<section id="wrapper" class="login-register">
+    <div class="login-box">
         <div class="card-body">
             <form ngNativeValidate [formGroup]="forma" (ngSubmit)="registrarUsuario()" class="form-horizontal form-material" id="loginform" action="index.html">
-                <a href="javascript:void(0)" class="text-center db"><img src="../assets/images/logo-icon.png" alt="Home" /><br/><img src="../assets/images/logo-text.png" alt="Home" /></a>
+                <a href="javascript:void(0)" class="text-center db"><img src="../assets/elLogo.png" alt="Home" width="100" height="100"/><br/>
+                  <!-- <img src="../assets/images/logo-text.png" alt="Home" /> -->
+                </a>
                 <h3 class="box-title m-t-40 m-b-0">Registrate ahora</h3><small>Crea una cuenta y disfruta.</small>
                 <div class="form-group m-t-20">
                     <div class="col-xs-12">
@@ -17,6 +19,18 @@
                         <input formControlName="correo" name="correo" class="form-control" type="email" required placeholder="Email">
                     </div>
                 </div>
+
+                <div class="form-group">
+                  <div class="col-xs-12">
+                    <label for="">Año Lectivo</label>
+                    <select name="aniolectivo">
+                      <option value="1">IV</option>
+                      <option value="2">V</option>
+                      <option value="3">VI</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div class="form-group ">
                     <div class="col-xs-12">
                         <input formControlName="password" name="password" class="form-control" type="password" required placeholder="Contraseña">
