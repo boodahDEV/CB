@@ -1,0 +1,25 @@
+<div class="row">
+
+  <!-- Usuarios -->
+  <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Usuarios</h4>
+        <table class="table table-hover" *ngIf="usuarios.length > 0">
+          <tbody>
+            <tr *ngFor="let usuario of usuarios" [routerLink]="['/usuarios']" class="pointer">
+              <td>
+                <img [src]="usuario.img | imagen" class="img-50 img-cicle" alt="">
+              </td>
+              <td>{{usuario.nombre}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="alert alert-info" *ngIf="usuarios.length === 0">
+          No hay registros
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
