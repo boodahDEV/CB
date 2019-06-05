@@ -94,23 +94,26 @@ export class UsuarioService {
     } else {
       localStorage.removeItem('email');
     }
-    let url = URL_SERVICIOS + '/login';
-    return this.http.post(url, usuario).pipe(
-      map((resp: any) => {
-        this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
-        return true;
-      })
-    );
+    // let url = URL_SERVICIOS + '/login';
+    // return this.http.post(url, usuario).pipe(
+    //   map((resp: any) => {
+    //     this.guardarStorage(resp.id, resp.token, resp.usuario, resp.menu);
+    //     return true;
+    //   })
+    // );
+    
+    return usuario;
   }
 
   crearUsuario(usuario: Usuario) {
     let url = URL_SERVICIOS + '/usuario';
 
-    return this.http.post(url, usuario)
-      .pipe(map((rep: any) => {
-        swal('Usuario creado', usuario.email, 'success');
-        return rep.usuario;
-      }));
+    swal('Usuario creado', usuario.email, 'success');
+    // return this.http.post(url, usuario)
+    //   .pipe(map((rep: any) => {
+    //     return rep.usuario;
+    //   }));
+    return usuario;
   }
 
   actualizarUsuario(usuario: Usuario) {

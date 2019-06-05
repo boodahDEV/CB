@@ -55,6 +55,7 @@ export class RegisterComponent implements OnInit {
       nombre: new FormControl(null, Validators.required),
       correo: new FormControl(null, [Validators.required, Validators.email]),
       // aniolectivo: new FormControl(null, Validators.required),
+      codeproclass: new FormControl(null),
       password: new FormControl(null, Validators.required),
       password2: new FormControl(null, Validators.required),
       condiciones: new FormControl(false)
@@ -63,6 +64,7 @@ export class RegisterComponent implements OnInit {
     this.forma.setValue({
       nombre: 'Test',
       correo: 'test@test.com',
+      codeproclass: '2882',
       password: '123456',
       password2: '123456',
       condiciones: false
@@ -85,10 +87,12 @@ export class RegisterComponent implements OnInit {
       this.forma.value.password
     );
 
-    this._usuarioService.crearUsuario(usuario)
-      .subscribe(resp => {
-        console.log('resp:: ', resp);
-        this.router.navigate(['/login']);
-      });
+    let temp = this._usuarioService.crearUsuario(usuario);
+    console.log("TEMP(crearUsuario):  ",temp);
+      // .subscribe(resp => {
+      //   console.log('resp:: ', resp);
+      //   this.router.navigate(['/login']);
+      // });
   }
+  
 }
