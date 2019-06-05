@@ -1,9 +1,0 @@
-#!/usr/bin/nodejs
-var debug = require('debug')('my-application');
-var app = require('../app');
-
-app.set('port', process.env.PORT || 3000);
-
-var server = app.listen(app.get('port'), function() {
-  debug('Servidor en ejecucion prros :v ' + server.address().port);
-});
