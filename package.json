@@ -1,0 +1,17 @@
+{
+  "name": "Chemical_Burette",
+  "version": "0.0.5",
+  "private": false,
+  "author": "@boodah, @HarryALvarado, @beatrizjg",
+  "license": "Apache 2.0",
+  "scripts": {
+    "start": "hotnode app.js"
+  },
+  "dependencies": {
+    "express": "latest",
+    "hotnode": "latest",
+    "mssql": "^5.1.0",
+    "tedious": "latest",
+    "body-parser": "latest"
+  }
+}
