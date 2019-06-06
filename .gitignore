@@ -7,7 +7,7 @@
 
 # dependencies
 /node_modules
-
+/.vs
 # IDEs and editors
 /.idea
 .project
@@ -23,6 +23,7 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vs
 
 # misc
 /.sass-cache
