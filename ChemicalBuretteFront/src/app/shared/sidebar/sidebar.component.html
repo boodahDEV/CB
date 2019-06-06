@@ -21,8 +21,9 @@
                         <li><a (click)="_usuarioService.logout()" class="pointer">Logout</a></li>
                     </ul>
                 </li>
+
                 <li class="nav-devider"></li>
-                <li class="nav-small-cap">PERSONAL</li>
+                <li class="nav-small-cap">Nucleo n1 (Trimestre)</li>
                 <li *ngFor="let menu of _sidebar.menu">
                  <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i [class]="menu.icono"></i><span class="hide-menu">{{menu.titulo}} <span class="label label-rouded label-themecolor pull-right">{{menu.submenu.length}}</span></span></a>
                     <ul aria-expanded="false" class="collapse">
@@ -34,6 +35,21 @@
                         <li><a href="index4.html">Modern</a></li> -->
                     </ul>
                 </li>
+                
+                <li class="nav-devider"></li>
+                <li class="nav-small-cap">Nucleo n2 (Trimestre)</li>
+                <li *ngFor="let menu of _sidebar.menu">
+                 <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i [class]="menu.icono"></i><span class="hide-menu">{{menu.titulo}} <span class="label label-rouded label-themecolor pull-right">{{menu.submenu.length}}</span></span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li *ngFor="let submenu of menu.submenu">
+                          <a routerLinkActive="active" [routerLink]="[submenu.url]">{{submenu.titulo}} </a>
+                        </li>
+                        <!-- <li><a href="index2.html">Analytical</a></li>
+                        <li><a href="index3.html">Demographical</a></li>
+                        <li><a href="index4.html">Modern</a></li> -->
+                    </ul>
+                </li>
+
 
             </ul>
         </nav>

@@ -20,6 +20,7 @@
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
+    "angular": "^1.7.8",
     "core-js": "^2.6.5",
     "ng2-charts": "^1.6.0",
     "particles.js": "^2.0.0",

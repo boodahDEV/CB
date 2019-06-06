@@ -2,7 +2,7 @@
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
 <section id="wrapper" class="login-register">
-    <div class="login-box">
+    <div class="login-box card">
         <div class="card-body">
             <form ngNativeValidate [formGroup]="forma" (ngSubmit)="registrarUsuario()" class="form-horizontal form-material" id="loginform" action="index.html">
                 <a href="javascript:void(0)" class="text-center db"><img src="../assets/elLogo.png" alt="Home" width="100" height="100"/><br/>
@@ -31,11 +31,18 @@
                   </div>
                 </div>
 
-                <div class="form-group ">
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input formControlName="codeproclass" name="codeproclass" class="form-control" type="text" required placeholder="Código Profesor/Clase">
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <div class="col-xs-12">
                         <input formControlName="password" name="password" class="form-control" type="password" required placeholder="Contraseña">
                     </div>
                 </div>
+
                 <div class="form-group">
                     <div class="col-xs-12">
                         <input formControlName="password2" name="password2" class="form-control" type="password" required placeholder="Confirmar Contraseña">

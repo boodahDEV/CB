@@ -65,11 +65,14 @@ export class LoginComponent implements OnInit {
     //     console.log('resp:login:: ', resp);
     //     this.router.navigate(['/dashboard']);
     //   });
-    if (usuario.email == 'test1@gmail.com' && usuario.password == '123456') {
+
+    let temp = this._usuarioService.login(usuario, forma.value.recuerdame);
+    
+    if (temp.email == 'test1@gmail.com' && temp.password == '123456') {
       console.log('Starting:login:: ');
       this.router.navigate(['/dashboard']);
     }
-    console.log('INGRESANDO!!!', forma.valid);
+    console.log('forma.valid::', forma.valid);
     console.log(forma.value);
   }
 

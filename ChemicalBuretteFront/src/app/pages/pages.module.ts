@@ -28,6 +28,7 @@ import { ModalUploadComponent } from '../components/modal-upload/modal-upload.co
 // import { MedicosComponent } from './medicos/medicos.component';
 // import { MedicoComponent } from './medicos/medico.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
     FormsModule,
     ChartsModule,
     PipesModule,
-    CommonModule
+    CommonModule,
+    ComponentsModule
   ],
   declarations: [
     // PagesComponent,

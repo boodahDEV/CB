@@ -1,24 +1,6 @@
-/*
-Template Name: Admin pro Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: scss
-*/
-/*
-Template Name: Chemical Burette Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: scss
-*/
-/*Theme Colors*/
-/*bootstrap Color*/
-/*Light colors*/
-/*Normal Color*/
-/*Extra Variable*/
-/*******************
-Login register and recover password Page
-******************/
+
 .login-register {
+  background-image: url('/assets/images/background/back-login-3.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -26,37 +8,48 @@ Login register and recover password Page
   width: 100%;
   padding: 3% 0;
   position: fixed;
-  /* margin-bottom: 100px;
-  margin-top: 10px; */
+ }
 
+ .login-register-ex {
+  background-image: url('/assets/images/background/back-login-3.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 100%;
+  width: 100%;
+  padding: 10% 0; /*<-- cambia*/
+  position: fixed;
  }
 
 .login-box {
-  width: 400px;
-  margin: 0 auto; }
-  .login-box .footer {
-    width: 100%;
-    left: 0px;
-    right: 0px; }
-  .login-box .social {
-    display: block;
-    margin-bottom: 30px; }
+  width: 380px;
+  margin: 0 auto;
+  /* border: 2px; */
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5%;
+}
+.login-box .footer {
+  width: 100%;
+  left: 0px;
+  right: 0px; 
+}
+
+.login-box .social {
+  display: block;
+  margin-bottom: 30px; 
+}
 
 #recoverform {
-  display: none; }
+  display: none; 
+}
 
 .login-sidebar {
   padding: 0px;
-  margin-top: 0px; }
-  .login-sidebar .login-box {
-    right: 0px;
-    position: absolute;
-    height: 100%; }
-
-/* .bg-black {
-  background-color: black;
+  margin-top: 0px; 
 }
-#particles-js{
-  width: 100%;
-  height: 100;
-} */
+.login-sidebar .login-box {
+  right: 0px;
+  position: absolute;
+  height: 100%; 
+}

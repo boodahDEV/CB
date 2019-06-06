@@ -17,6 +17,7 @@ import { PagesModule } from './pages/pages.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PagesComponent } from './pages/pages.component';
 import { SharedModule } from './shared/shared.module';
+import { ComponentsModule } from './components/components.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SharedModule } from './shared/shared.module';
     FormsModule,
     ReactiveFormsModule,
     ServiceModule,
-    SharedModule
+    SharedModule,
+    ComponentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
