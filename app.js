@@ -2,11 +2,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var firebase = require('firebase');
 var admin = require('firebase-admin');
-let fs = require('fs');
-var serviceAccount = fs.readFileSync('serviceAccountKey.json', 'utf-8');
+//let fs = require('fs');
+//var serviceAccount = fs.readFileSync('serviceAccountKey.json', 'utf-8');
 const app = express();
 const port = process.env.PORT || 9000;
-let modoLocal = false;
+let modoLocal = false
+const apikey = process.env.APIKEY;
+const authDomine = process.env.AD;
+const msi = process.env.MSI;
+const Apid = process.env.AID
+/*
 
 //para el administrador
 admin.initializeApp({
@@ -15,7 +20,7 @@ admin.initializeApp({
 });
 //para el administrador
 
-
+*/
 //test
 var USUARIO = {
   PATHHEAD: 'Users',
@@ -86,9 +91,13 @@ function local() {
 
 function firebaseConnect(){
   var config = {
+    apiKey: apikey,
+    authDomain: authDomine,
     databaseURL: "https://chemical-burette.firebaseio.com",
     projectId: "chemical-burette",
     storageBucket: "chemical-burette.appspot.com",
+    messagingSenderId: msi,
+    appId: Apid
   };
   firebase.initializeApp(config);
   var database = firebase.database();
@@ -137,6 +146,8 @@ function creaUsuarios(firebase, email, password){
 });
 }
 
+
+/*
 function consultaUID(uid, admin){
 
   admin.auth().getUser(uid)
@@ -149,3 +160,4 @@ function consultaUID(uid, admin){
   });
 }
 
+*/
