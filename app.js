@@ -1,94 +1,151 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+var firebase = require('firebase');
+var admin = require('firebase-admin');
+let fs = require('fs');
+var serviceAccount = fs.readFileSync('serviceAccountKey.json', 'utf-8');
 const app = express();
 const port = process.env.PORT || 9000;
-var data_temporal = {
-  user: 'farauz',
-  pass: '1234'
-};
-var respuesta = {
-  error: false,
-  codigo: 200,
-  message: '',
-};
+let modoLocal = false;
 
-
-//LEVANTANDO EL SERVIDOR //
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
-  next();
+//para el administrador
+admin.initializeApp({
+  credential: admin.credential.cert(JSON.parse(serviceAccount)),
+  databaseURL: "https://chemical-burette.firebaseio.com"
 });
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.listen(port, () => console.log('Aplicación inicializada sobre el puerto ' + port));
-//LEVANTANDO EL SERVIDOR //
+//para el administrador
 
 
-//// <--- Routes ---> ////
-var routeHA = '/api/login';
+//test
+var USUARIO = {
+  PATHHEAD: 'Users',
+  TIPO: '100',
+  NombreUsuario: 'Farauz',
+  ID: '100000',
+  emails: 'arauzfaustino2@gmail.com',
+  pass: '12345',
+  configMORE: {
+    Nombre: 'Faustino',
+    Apellido: 'Arauz',
+    CIP: '8-916-2357',
+    Genero: 'M',
+    ID_INST: 'NONE',
+    ID_Materia: 'NONE',
+    Fecha_START: '2019-06-11'
+  }
+}
+
+
+
+
 /*
-app.get(routeHA, (req, res) => {
-  res.status(200).send({ prueba: 'Enviando data...' });
-});
+ ######################
+ ######################
+ ###################### 
 */
-app.post(routeHA, (req, res) => {
-  console.log(req.body);
-  res.status(200).send({ message: 'Recibido' });
-});
-
-app.get('/users', (req, res) => {
-  //let student = req.params;
-  //console.log("EStudinate: " + student);
-  res.status(200).send({ UserName: `Recibido #${student}` });
-});
-//// <--- Routes ---> ////
+  if (modoLocal!=false)
+    local();
+  else 
+    firebaseConnect();
+/*
+ ######################
+ ######################
+ ###################### 
+*/
 
 
-Connection_tedious();
-//// <---  CONNECTION WITH TEDIUOS   ---> ////
-function Connection_tedious() {
-  var Connection = require('tedious').Connection;
-  const Request = require('tedious').Request;
-  const TYPES = require('tedious').TYPES;
-  var config = {
-    server: 'BOODAH',
-    authentication: {
-      type: 'default',
-      options: {
-        userName: 'sa',
-        password: 'sql',
-        database: 'CB_DB'
-      }
-    }
-  };
 
-  var connection = new Connection(config);
-  connection.on('connect', function (err) {
-    if (err)
-      console.log("Fuck\n\n\n" + err);
-    else
-      console.log("Ok ");
-    consult_sql(connection, (err, res) => {
-      if (err) console.log(`Error en el QUERY => ${err}`);
-      else console.log(res);
+
+
+function local() {
+  //LEVANTANDO EL SERVIDOR //
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+    next();
+  });
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.listen(port, () => console.log('Aplicación inicializada sobre el puerto ' + port));
+  //LEVANTANDO EL SERVIDOR //
+  /***********************************************************************************************************/
+  //// <--- Routes ---> ////
+    var routeHA = '/api/login';
+
+            app.get(routeHA, (req, res) => {
+              res.status(200).send({ prueba: 'Enviando data...' });
+            });
+      
+    app.post(routeHA, (req, res) => {
+      console.log(req.body);
+      res.status(200).send({ message: 'Recibido' });
     });
+  //// <--- Routes ---> ////
+}//end localhost
+
+function firebaseConnect(){
+  var config = {
+    databaseURL: "https://chemical-burette.firebaseio.com",
+    projectId: "chemical-burette",
+    storageBucket: "chemical-burette.appspot.com",
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+/**/
+    //writeUserData(database,USUARIO); //REGISTRA
+    readUsersData(database,USUARIO);
+/**/
+}
+
+
+//REGISTRA USUARIOS BASICO --  DatabaseFirebase [En teoria la data viene del HTML]
+function writeUserData(database,USUARIO) {
+  database.ref(USUARIO.PATHHEAD+'/'+USUARIO.TIPO+'/'+USUARIO.NombreUsuario)
+  .set(
+        {
+         ID: USUARIO.ID,
+         Email: USUARIO.emails,
+         Pass: USUARIO.pass,
+         CONFIG_MORE: {
+            Name: USUARIO.configMORE.Nombre,
+            Lastname: USUARIO.configMORE.Apellido,
+            CIP: USUARIO.configMORE.CIP,
+            Sex: USUARIO.configMORE.Genero,
+            ID_inst: USUARIO.configMORE.ID_INST,
+            ID_course: USUARIO.configMORE.ID_Materia,
+            DATE_START: USUARIO.configMORE.Fecha_START
+          }
+        }
+      );
+}
+
+//CONSULTA A LA BASE DE DATOS DE FIREBASE
+function readUsersData(database, USUARIO){
+  database.ref(USUARIO.PATHHEAD+'/'+USUARIO.TIPO).on('value', (snapshot)=>{
+    const result = snapshot.val();
+    console.log('Users_type -- ['+USUARIO.TIPO+']:  ', result);
   });
 }
 
-function consult_sql(connection, callback) {
-  var results = {};
-  var Request = require('tedious').Request;
-  var request = new Request(`USE CB_DB; SELECT * FROM dbo.Estudiante WHERE NomUser = '${data_temporal.user}' `, (error) => {
-    if (error) return callback(error);
-    callback(null, results);
+function creaUsuarios(firebase, email, password){
+  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // ...
+});
+}
 
+function consultaUID(uid, admin){
+
+  admin.auth().getUser(uid)
+  .then(function(userRecord) {
+    // See the UserRecord reference doc for the contents of userRecord.
+    console.log("Successfully fetched user data:", userRecord.toJSON());
+  })
+  .catch(function(error) {
+    console.log("Error fetching user data:", error);
   });
+}
 
-  request.on("row", function (rowObject) {
-    results.user = rowObject;    //anade al arreglo la siguiente columna
-  });
-  connection.execSql(request);
-
-}//end consult
