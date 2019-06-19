@@ -1,8 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+var crypto = require('crypto');
 var firebase = require("firebase");
 var admin = require("firebase-admin");
 let fs = require("fs");
+
+
 var serviceAccount = fs.readFileSync("serviceAccountKey.json", "utf-8");
 var config = fs.readFileSync("config_firebase.json", "utf-8");
 const app = express();
@@ -10,7 +13,14 @@ const port = process.env.PORT || 9000;
 let modoLocal = false;
 
 //test
-var DATAs = {
+var USER = {
+	Email: "boodah21@protonmail.com",
+	emailVerified: false,
+    password: md5("secretPassword"),
+    displayName: "Faustino Arauz",
+};
+
+var DATA = {
   PATHHEAD: "Users",
   TIPO: "100",
   NombreESTUDIANTE: "Farauz",
@@ -45,18 +55,12 @@ var PROFESOR = {
     Fecha_START: "2019-06-12"
   }
 };
-/*
- ######################
- ###############################################################
- ###################### 
-*/
+
+
 if (modoLocal != false) local();
 else firebaseConnect(serviceAccount, config);
-/*
- ######################
- ###############################################################
- ###################### 
-*/
+
+
 function local() {
   //LEVANTANDO EL SERVIDOR //
   app.use(function(req, res, next) {
@@ -94,7 +98,9 @@ function local() {
 
 function firebaseConnect(serviceAccount, config) {
   admin_init(serviceAccount);
-
+  CREA_USUARIOS_AUTENTIFICADOS(admin,USER);
+  
+  /*_______________________________________________*/
   firebase.initializeApp(JSON.parse(config));
   var database = firebase.database();
   // writeUserData(database,ESTUDIANTE); //REGISTRA
@@ -108,7 +114,7 @@ function admin_init(serviceAccount) {
     databaseURL: "https://chemical-burette.firebaseio.com"
   });
   var uid = "3kx4KcwINvUOipoevvyMyLgMXQ12";
-  consulta_UID(uid, admin);
+  //consulta_UID(uid, admin);
 }
 
 //Este la idea es generalizar el inicio.
@@ -173,22 +179,30 @@ function consulta_UID(uid, admin) {
     });
 }
 
-function CREA_USUARIOS_AUTENTIFICADOS(admin) {
+function CREA_USUARIOS_AUTENTIFICADOS(admin,USER) {
   admin
     .auth()
     .createUser({
-      email: "arauzfaustino2@gmail.com", //Necesito mail
+      email: "boodah21@protonmail.com", //Necesito mail
       emailVerified: false,
-      phoneNumber: "",
-      photoURL: "",
-      password: "secretPassword",
+      password: md5("secretPassword"),
       displayName: "Faustino Arauz",
       disabled: false
-    })
+    }) 
     .then(function(userRecord) {
       console.log("Successfully created new user:", userRecord.uid);
+      var user = firebase.auth().currentUser;
+		user.sendEmailVerification().then(function() {
+		  console.log("Espera de verificacion");
+		}).catch(function(error) {
+		 console.log("Error mail:", error);
+		});
     })
     .catch(function(error) {
       console.log("Error creating new user:", error);
     });
+}
+
+function md5(string) {
+    return crypto.createHash('md5').update(string).digest('hex');
 }
