@@ -1,23 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-var crypto = require('crypto');
+var crypto = require("crypto"); // basico para la proteccion en el envio de la contrasena
 var firebase = require("firebase");
 var admin = require("firebase-admin");
 let fs = require("fs");
 
-
 var serviceAccount = fs.readFileSync("serviceAccountKey.json", "utf-8");
 var config = fs.readFileSync("config_firebase.json", "utf-8");
-const app = express();
-const port = process.env.PORT || 9000;
-let modoLocal = false;
 
-//test
+//test USER es mas que nada para hacer la carga de usuarios en general tanto 100 como 110 (Est, Prof)
 var USER = {
-	Email: "boodah21@protonmail.com",
-	emailVerified: false,
-    password: md5("secretPassword"),
-    displayName: "Faustino Arauz",
+  Email: "boodah21@protonmail.com",
+  emailVerified: false,
+  password: md5("secretPassword"),
+  displayName: "Faustino Arauz"
 };
 
 var DATA = {
@@ -56,12 +52,20 @@ var PROFESOR = {
   }
 };
 
+function main(serviceAccount, config, serviceAccount ){
+  let modoLocal = false;
+  const port = process.env.PORT || 9000;
 
-if (modoLocal != false) local();
-else firebaseConnect(serviceAccount, config);
+  if (modoLocal != false) local();
+  else firebaseConnect(serviceAccount, config);
+}// fin del metodo principal
+
+
+
 
 
 function local() {
+  const app = express();
   //LEVANTANDO EL SERVIDOR //
   app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -98,14 +102,11 @@ function local() {
 
 function firebaseConnect(serviceAccount, config) {
   admin_init(serviceAccount);
-  CREA_USUARIOS_AUTENTIFICADOS(admin,USER);
-  
+  CREA_USUARIOS_AUTENTIFICADOS(admin, USER);
+
   /*_______________________________________________*/
   firebase.initializeApp(JSON.parse(config));
   var database = firebase.database();
-  // writeUserData(database,ESTUDIANTE); //REGISTRA
-  // writeProfeData(database, PROFESOR);
-  // readUsersData(database,PROFESOR);
 } //fin firebaseconnect
 
 function admin_init(serviceAccount) {
@@ -179,7 +180,7 @@ function consulta_UID(uid, admin) {
     });
 }
 
-function CREA_USUARIOS_AUTENTIFICADOS(admin,USER) {
+function CREA_USUARIOS_AUTENTIFICADOS(admin, USER) {
   admin
     .auth()
     .createUser({
@@ -188,15 +189,18 @@ function CREA_USUARIOS_AUTENTIFICADOS(admin,USER) {
       password: md5("secretPassword"),
       displayName: "Faustino Arauz",
       disabled: false
-    }) 
+    })
     .then(function(userRecord) {
       console.log("Successfully created new user:", userRecord.uid);
       var user = firebase.auth().currentUser;
-		user.sendEmailVerification().then(function() {
-		  console.log("Espera de verificacion");
-		}).catch(function(error) {
-		 console.log("Error mail:", error);
-		});
+      user
+        .sendEmailVerification()
+        .then(function() {
+          console.log("Espera de verificacion");
+        })
+        .catch(function(error) {
+          console.log("Error mail:", error);
+        });
     })
     .catch(function(error) {
       console.log("Error creating new user:", error);
@@ -204,5 +208,8 @@ function CREA_USUARIOS_AUTENTIFICADOS(admin,USER) {
 }
 
 function md5(string) {
-    return crypto.createHash('md5').update(string).digest('hex');
+  return crypto
+    .createHash("md5")
+    .update(string)
+    .digest("hex");
 }

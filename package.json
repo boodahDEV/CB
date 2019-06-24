@@ -1,29 +1,28 @@
 {
-  "name": "test_firebase",
+  "name": "ChemicalBurette",
   "version": "1.0.0",
+  "private": false,
   "description": "Pruebas",
+  "author": "@boodah, @HarryALvarado, @beatrizjg",
   "main": "app.js",
+  "license": "Apache 2.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/boodahDEV/Test_Firebase.git"
+    "url": "https://github.com/boodahDEV/CB.git"
   },
-  "author": "boodah",
-  "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/boodahDEV/Test_Firebase/issues"
+    "url": "https://github.com/boodahDEV/CB/issues"
   },
-  "homepage": "https://github.com/boodahDEV/Test_Firebase#readme",
+  "homepage": "https://github.com/boodahDEV/CB#readme",
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
+    "express": "latest",
     "firebase": "^6.1.1",
     "firebase-admin": "^8.1.0",
+    "body-parser": "latest",
     "firebaseui": "^4.0.0",
-    "hotnode": "0.0.8",
     "nodemon": "^1.19.1"
   }
 }
