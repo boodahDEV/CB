@@ -10,6 +10,8 @@ firebase-debug.log*
 .firebase/
 .firebaserc
 firebase.json
+config_firebase.json
+serviceAccountKey.json
 # Firebase config
 
 # Uncomment this if you'd like others to create their own Firebase project.

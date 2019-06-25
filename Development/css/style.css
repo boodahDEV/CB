@@ -112,7 +112,7 @@ body {
 	font-size: 20px;
 	line-height: 2.14286;
 	font-weight: 400;
-	color: #4e4e4e;
+	color: #3d3c3c;
 	background-image: linear-gradient(rgba(25, 0, 255, 0.5), rgba(255, 0, 157, 0.6), rgba(255, 238, 0, 0.5)),url("/images/fondo.jpg");
 	background-position: center; /* Center the image */
 	background-repeat: no-repeat; /* Do not repeat the image */
@@ -714,25 +714,26 @@ a[href*='tel'], a[href*='mailto'] {
 }
 
 .image-left-side {
-	max-width: 80%;
-	margin: 40px auto 0 auto;
+	max-width: 100%;
+	margin: 0px auto 0 auto;
 }
 
 
 @media (min-width: 992px) {
 	.image-left-side {
-		left: calc(50% + 150px);
+		left: 100%;
 		position: absolute;
 		top: 0;
 		height: 75%;
 		right: 0;
-		padding-top: 30px;
+		padding-top: 100px;
+		padding-right: 0px;
 	}
 }
 
 @media (min-width: 1200px) {
 	.image-left-side {
-		left: calc(50% + 260px);
+		left: calc(50% + 120px);
 	}
 }
 
@@ -740,7 +741,6 @@ a[href*='tel'], a[href*='mailto'] {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	box-shadow: 0px 0px 31px 5px rgba(0, 0, 0, 0.1);
 }
 
 .pricing-box {
@@ -5259,20 +5259,25 @@ html [class*='section-'].section-bottom-0 {
 }
 
 .bg-gray-dark {
+	/* background-image: url('/images/b-02.jpg'); */
 	background-color: #404044;
 }
 
-.bg-gray-dark:not([style*="background-"]) + .bg-gray-dark:not([style*="background-"]) {
+/* .bg-gray-dark:not([style*="background-"]) + .bg-gray-dark:not([style*="background-"]) {
 	padding-top: 0;
-}
+} */
 
 .bg-gray-primary {
-	background-color: #505cfd;
+	background: url("../images/Profesor.png") no-repeat center center;
+	background-size: contain;
+	width: 100%;
+	height: 100%;
+	/* background-color: #505cfd; */
 }
 
-.bg-gray-primary:not([style*="background-"]) + .bg-gray-primary:not([style*="background-"]) {
+/* .bg-gray-primary:not([style*="background-"]) + .bg-gray-primary:not([style*="background-"]) {
 	padding-top: 0;
-}
+} */
 
 .bg-gray {
 	background-color: #48484c;
@@ -6930,7 +6935,7 @@ html.rd-navbar-fixed-linked .page {
 
 .rd-navbar-sidebar .rd-navbar-main-element {
 	display: flex;
-	align-items: center;
+	align-items: right;
 }
 
 .rd-navbar-sidebar .rd-navbar-main-element > * + * {
