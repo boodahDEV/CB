@@ -1,121 +1,62 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-var crypto = require("crypto"); // basico para la proteccion en el envio de la contrasena
-var firebase = require("firebase");
-var admin = require("firebase-admin");
-let fs = require("fs");
-
-var serviceAccount = fs.readFileSync("serviceAccountKey.json", "utf-8");
-var config = fs.readFileSync("config_firebase.json", "utf-8");
-
-//test USER es mas que nada para hacer la carga de usuarios en general tanto 100 como 110 (Est, Prof)
-var USER = {
-  Email: "boodah21@protonmail.com",
-  emailVerified: false,
-  password: md5("secretPassword"),
-  displayName: "Faustino Arauz"
-};
-
 var DATA = {
-  PATHHEAD: "Users",
-  TIPO: "100",
-  NombreESTUDIANTE: "Farauz",
-  ID: "100000",
-  emails: "arauzfaustino2@gmail.com",
-  pass: "12345",
-  configMORE: {
-    Nombre: "Faustino",
-    Apellido: "Arauz",
-    CIP: "8-916-2357",
-    Genero: "M",
-    ID_INST: "NONE",
-    ID_Materia: "101",
-    Fecha_START: "2019-06-11"
-  }
-};
-var PROFESOR = {
-  PATHHEAD: "Users",
-  TIPO: "110",
-  Nombre_usuario: "Farauz",
-  ID: "11001",
-  emails: "fa@gmail.com",
-  pass: "12345",
-  code: "11101",
-  configMORE: {
-    Nombre: "Faustino",
-    Apellido: "Arauz",
-    CIP: "8-916-2357",
-    Genero: "M",
-    ID_INST: "NONE",
-    Especializacion: "Dr. Quimica general basado en la Ionizacion",
-    Fecha_START: "2019-06-12"
-  }
+  codepc: "",
+  email: "",
+  lastname: "",
+  name: "",
+  password: ""
 };
 
-function main(serviceAccount, config, serviceAccount ){
-  let modoLocal = false;
-  const port = process.env.PORT || 9000;
+
+
+/*  -MAIN-  */
+main(DATA);
+//DATA es mas que nada el JSON que viene con todo practicamente del frontend pasando por el RealTime de firebaseV1.0
+function main(DATA) {
+  var crypto =          require("crypto"); // basico para la proteccion en el envio de la contrasena
+  var firebase =        require("firebase");
+  var admin =           require("firebase-admin");
+  let fs =              require("fs");
+  var serviceAccount =  fs.readFileSync("serviceAccountKey.json", "utf-8");
+  var config =          fs.readFileSync("config_firebase.json", "utf-8");
+
+  let modoLocal = false; //Activar cuando se inicia el modo local
 
   if (modoLocal != false) local();
-  else firebaseConnect(serviceAccount, config);
-}// fin del metodo principal
+  else firebaseConnect(admin, serviceAccount, config, firebase);
+} // fin del metodo principal
+/*  -MAIN-  */
 
 
 
 
 
-function local() {
-  const app = express();
-  //LEVANTANDO EL SERVIDOR //
-  app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.header(
-      "Access-Control-Allow-Methods",
-      "POST, GET, PUT, DELETE, OPTIONS"
-    );
-    next();
-  });
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.json());
-  app.listen(port, () =>
-    console.log("Aplicación inicializada sobre el puerto " + port)
-  );
-  //LEVANTANDO EL SERVIDOR //
-  /***********************************************************************************************************/
-  //// <--- Routes ---> ////
-  var routeHA = "/api/login";
-
-  app.get(routeHA, (req, res) => {
-    res.status(200).send({ prueba: "Enviando data..." });
-  });
-
-  app.post(routeHA, (req, res) => {
-    console.log(req.body);
-    res.status(200).send({ message: "Recibido" });
-  });
-  //// <--- Routes ---> ////
-} //end localhost
-
-function firebaseConnect(serviceAccount, config) {
-  admin_init(serviceAccount);
-  CREA_USUARIOS_AUTENTIFICADOS(admin, USER);
-
-  /*_______________________________________________*/
+function firebaseConnect(admin, serviceAccount, config,firebase) {
   firebase.initializeApp(JSON.parse(config));
   var database = firebase.database();
+  var hot_data_from_firebase = readUsersData(database);  //trae la data caliente de firebase
+  hot_data_from_firebase.then((resultado)=>{
+    var hot_data = [];
+    for(var i in resultado)
+      hot_data.push([i, resultado [i]]);
+    //console.log(hot_data[0][0]); esto trae los uids, etc
+    admin_init(admin,serviceAccount,hot_data); //ACTIVA EL ADMINISTRADOR PARA HACER LA CARGA Y EL ORDENAMIENTO
+  }).catch((error)=>{
+    console.log(error);
+  });
+  /*_______________________________________________*/
+  // admin_init(serviceAccount);
+  // CREA_USUARIOS_AUTENTIFICADOS(admin, USER);
 } //fin firebaseconnect
 
-function admin_init(serviceAccount) {
+
+
+
+function admin_init(admin,serviceAccount,  hot_data) {
   admin.initializeApp({
     credential: admin.credential.cert(JSON.parse(serviceAccount)),
     databaseURL: "https://chemical-burette.firebaseio.com"
   });
-  var uid = "3kx4KcwINvUOipoevvyMyLgMXQ12";
-  //consulta_UID(uid, admin);
+  CREA_USUARIOS_AUTENTIFICADOS(admin,hot_data);
 }
 
 //Este la idea es generalizar el inicio.
@@ -138,35 +79,25 @@ function RegistraUsuarios(database, DATA) {
     });
 }
 
-function RegistraProfeData(database, PROFESOR) {
-  database
-    .ref(
-      PROFESOR.PATHHEAD + "/" + PROFESOR.TIPO + "/" + PROFESOR.Nombre_usuario
-    )
-    .set({
-      ID: PROFESOR.ID,
-      Email: PROFESOR.emails,
-      Pass: PROFESOR.pass,
-      CodeA: PROFESOR.code,
-      CONFIG_MORE: {
-        Name: PROFESOR.configMORE.Nombre,
-        Lastname: PROFESOR.configMORE.Apellido,
-        CIP: PROFESOR.configMORE.CIP,
-        Sex: PROFESOR.configMORE.Genero,
-        ID_inst: PROFESOR.configMORE.ID_INST,
-        Specialization: PROFESOR.configMORE.Especializacion,
-        DATE_START: PROFESOR.configMORE.Fecha_START
-      }
+
+//Data del database procedente del registro
+function readUsersData(database) {
+  return new Promise((resolve, reject)=>{
+    database.ref("students" + "/").on("value", snapshot => {
+      const result = snapshot.val();
+      if (result!= null)
+      return resolve(result);
+      else
+      return reject(new Error("Conexion con fuente de dato desconocida."));
+      //console.log('Users_type -- ['+"DATA"+']:  ', result);
     });
-}
-//Data del database procedente del Estudiante
-function readUsersData(callback, database, DATA) {
-  database.ref(DATA.PATHHEAD + "/" + DATA.TIPO).on("value", snapshot => {
-    const result = snapshot.val();
-    // console.log('Users_type -- ['+DATA.TIPO+']:  ', result);
-    callback(result);
   });
 }
+//Data del database procedente del registro
+
+
+
+
 
 function consulta_UID(uid, admin) {
   admin
@@ -180,32 +111,39 @@ function consulta_UID(uid, admin) {
     });
 }
 
-function CREA_USUARIOS_AUTENTIFICADOS(admin, USER) {
-  admin
-    .auth()
-    .createUser({
-      email: "boodah21@protonmail.com", //Necesito mail
-      emailVerified: false,
-      password: md5("secretPassword"),
-      displayName: "Faustino Arauz",
-      disabled: false
-    })
-    .then(function(userRecord) {
-      console.log("Successfully created new user:", userRecord.uid);
-      var user = firebase.auth().currentUser;
-      user
-        .sendEmailVerification()
-        .then(function() {
-          console.log("Espera de verificacion");
-        })
-        .catch(function(error) {
-          console.log("Error mail:", error);
-        });
-    })
-    .catch(function(error) {
-      console.log("Error creating new user:", error);
-    });
-}
+function CREA_USUARIOS_AUTENTIFICADOS(admin, hot_data) {
+  var final_data = {
+    uid: "",
+    codepc: "",
+    email: "",
+    lastname: "",
+    name: "",
+    password: ""
+  };
+ for (let i = 0; i < hot_data.length; i++) {
+   for (let j = 0; j < hot_data[i].length; j++) {
+     const element = hot_data[i][j];
+    }
+    final_data.uid = hot_data[i][0];
+  }
+//  }
+//   admin
+//     .auth()
+//     .createUser({
+//       // uid: "",
+//       // email: "boodah21@protonmail.com", //Necesito mail
+//       // emailVerified: false,
+//       // password: md5("secretPassword"),
+//       // displayName: "Faustino Arauz",
+//       // disabled: false
+//     })
+//     .then(function(userRecord) {
+//       console.log("Successfully created new user:", userRecord.uid);
+//     })
+//     .catch(function(error) {
+//       console.log("Error al crear nuevos usuarios:", error);
+//     });
+}//end
 
 function md5(string) {
   return crypto
