@@ -43,15 +43,12 @@ function firebaseConnect(admin, serviceAccount, config,firebase) {
   }).catch((error)=>{
     console.log(error);
   });
-  /*_______________________________________________*/
-  // admin_init(serviceAccount);
-  // CREA_USUARIOS_AUTENTIFICADOS(admin, USER);
 } //fin firebaseconnect
 
 
 
 
-function admin_init(admin,serviceAccount,  hot_data) {
+function admin_init(admin,serviceAccount,hot_data) {
   admin.initializeApp({
     credential: admin.credential.cert(JSON.parse(serviceAccount)),
     databaseURL: "https://chemical-burette.firebaseio.com"
@@ -88,7 +85,7 @@ function readUsersData(database) {
       if (result!= null)
       return resolve(result);
       else
-      return reject(new Error("Conexion con fuente de dato desconocida."));
+      return reject(new Error("Conexion con fuente de dato desconocida ---NO DATA---\n\n\n."));
       //console.log('Users_type -- ['+"DATA"+']:  ', result);
     });
   });
@@ -112,37 +109,33 @@ function consulta_UID(uid, admin) {
 }
 
 function CREA_USUARIOS_AUTENTIFICADOS(admin, hot_data) {
-  var final_data = {
-    uid: "",
-    codepc: "",
-    email: "",
-    lastname: "",
-    name: "",
-    password: ""
-  };
+  var db = admin.database();
  for (let i = 0; i < hot_data.length; i++) {
-   for (let j = 0; j < hot_data[i].length; j++) {
-     const element = hot_data[i][j];
-    }
-    final_data.uid = hot_data[i][0];
+    admin
+    .auth()
+    .createUser({
+      uid: hot_data[i][0],
+      email: hot_data[i][1].email, //Necesito mail
+      emailVerified: false,
+      password: hot_data[i][1].password,
+      displayName: ""+hot_data[i][1].name + " "+hot_data[i][1].lastname,
+      disabled: false
+    })
+    .then(function(userRecord) {
+      console.log("Successfully created new user:", userRecord.uid);
+        var ref = db.ref("students/"+userRecord.uid);
+            ref.remove()
+              .then(function() {
+                console.log("Remove succeeded from database RealTime.")
+              })
+              .catch(function(error) {
+                console.log("Remove failed: " + error.message)
+              });
+    })
+    .catch(function(error) {
+      console.log("Error al crear nuevos usuarios:", error);
+    });
   }
-//  }
-//   admin
-//     .auth()
-//     .createUser({
-//       // uid: "",
-//       // email: "boodah21@protonmail.com", //Necesito mail
-//       // emailVerified: false,
-//       // password: md5("secretPassword"),
-//       // displayName: "Faustino Arauz",
-//       // disabled: false
-//     })
-//     .then(function(userRecord) {
-//       console.log("Successfully created new user:", userRecord.uid);
-//     })
-//     .catch(function(error) {
-//       console.log("Error al crear nuevos usuarios:", error);
-//     });
 }//end
 
 function md5(string) {
