@@ -1,165 +1,75 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-var firebase = require("firebase");
-var admin = require("firebase-admin");
-let fs = require("fs");
-var serviceAccount = fs.readFileSync("serviceAccountKey.json", "utf-8");
-var config = fs.readFileSync("config_firebase.json", "utf-8");
-const app = express();
-const port = process.env.PORT || 9000;
-let modoLocal = false;
-
-//test
-var DATAs = {
-  PATHHEAD: "Users",
-  TIPO: "100",
-  NombreESTUDIANTE: "Farauz",
-  ID: "100000",
-  emails: "arauzfaustino2@gmail.com",
-  pass: "12345",
-  configMORE: {
-    Nombre: "Faustino",
-    Apellido: "Arauz",
-    CIP: "8-916-2357",
-    Genero: "M",
-    ID_INST: "NONE",
-    ID_Materia: "101",
-    Fecha_START: "2019-06-11"
-  }
+var DATA = {
+  uid: "",
+  codepc: "",
+  email: "",
+  lastname: "",
+  name: "",
+  password: ""
 };
-var PROFESOR = {
-  PATHHEAD: "Users",
-  TIPO: "110",
-  Nombre_usuario: "Farauz",
-  ID: "11001",
-  emails: "fa@gmail.com",
-  pass: "12345",
-  code: "11101",
-  configMORE: {
-    Nombre: "Faustino",
-    Apellido: "Arauz",
-    CIP: "8-916-2357",
-    Genero: "M",
-    ID_INST: "NONE",
-    Especializacion: "Dr. Quimica general basado en la Ionizacion",
-    Fecha_START: "2019-06-12"
-  }
-};
-/*
- ######################
- ###############################################################
- ###################### 
-*/
-if (modoLocal != false) local();
-else firebaseConnect(serviceAccount, config);
-/*
- ######################
- ###############################################################
- ###################### 
-*/
-function local() {
-  //LEVANTANDO EL SERVIDOR //
-  app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.header(
-      "Access-Control-Allow-Methods",
-      "POST, GET, PUT, DELETE, OPTIONS"
-    );
-    next();
-  });
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.json());
-  app.listen(port, () =>
-    console.log("Aplicación inicializada sobre el puerto " + port)
-  );
-  //LEVANTANDO EL SERVIDOR //
-  /***********************************************************************************************************/
-  //// <--- Routes ---> ////
-  var routeHA = "/api/login";
 
-  app.get(routeHA, (req, res) => {
-    res.status(200).send({ prueba: "Enviando data..." });
-  });
 
-  app.post(routeHA, (req, res) => {
-    console.log(req.body);
-    res.status(200).send({ message: "Recibido" });
-  });
-  //// <--- Routes ---> ////
-} //end localhost
 
-function firebaseConnect(serviceAccount, config) {
-  admin_init(serviceAccount);
+/*  -MAIN-  */
+main(DATA);
+//DATA es mas que nada el JSON que viene con todo practicamente del frontend pasando por el RealTime de firebaseV1.0
+function main(DATA) {
+  var crypto =          require("crypto"); // basico para la proteccion en el envio de la contrasena
+  var firebase =        require("firebase");
+  var admin =           require("firebase-admin");
+  let fs =              require("fs");
+  var serviceAccount =  fs.readFileSync("serviceAccountKey.json", "utf-8");
+  var config =          fs.readFileSync("config_firebase.json", "utf-8");
 
+  let modoLocal = false; //Activar cuando se inicia el modo local
+
+  if (modoLocal != false) local();
+  else firebaseConnect(admin, serviceAccount, config, firebase);
+} // fin del metodo principal
+/*  -MAIN-  */
+
+
+
+
+
+function firebaseConnect(admin, serviceAccount, config,firebase) {
   firebase.initializeApp(JSON.parse(config));
-  var database = firebase.database();
-  // writeUserData(database,ESTUDIANTE); //REGISTRA
-  // writeProfeData(database, PROFESOR);
-  // readUsersData(database,PROFESOR);
-} //fin firebaseconnect
-
-function admin_init(serviceAccount) {
   admin.initializeApp({
     credential: admin.credential.cert(JSON.parse(serviceAccount)),
     databaseURL: "https://chemical-burette.firebaseio.com"
   });
-  var uid = "3kx4KcwINvUOipoevvyMyLgMXQ12";
-  consulta_UID(uid, admin);
-}
+  var database = firebase.database();
+  var schedule = require('node-schedule');
+  var hot_data_from_firebase="";
 
-//Este la idea es generalizar el inicio.
-function RegistraUsuarios(database, DATA) {
-  database
-    .ref(DATA.PATHHEAD + "/" + DATA.TIPO + "/" + DATA.Nombre_usuario)
-    .set({
-      ID: DATA.ID,
-      Email: DATA.emails,
-      Pass: DATA.pass,
-      CONFIG_MORE: {
-        Name: DATA.configMORE.Nombre,
-        Lastname: DATA.configMORE.Apellido,
-        CIP: DATA.configMORE.CIP,
-        Sex: DATA.configMORE.Genero,
-        ID_inst: DATA.configMORE.ID_INST,
-        ID_course: DATA.configMORE.ID_Materia,
-        DATE_START: DATA.configMORE.Fecha_START
-      }
+  var j = schedule.scheduleJob("*/2 * * * * *", function() {
+    hot_data_from_firebase = readUsersData(database);  //trae la data caliente de firebase
+    hot_data_from_firebase.then((resultado)=>{
+      var hot_data = [];
+      for(var i in resultado)
+        hot_data.push([i, resultado [i]]);
+      //console.log(hot_data[0][0]); //esto trae los uids, etc
+      CREA_USUARIOS_AUTENTIFICADOS(admin,hot_data,firebase);
+    }).catch((error)=>{
+      console.log("Sin Cambios, - NO DATA - ");
     });
-}
+  });
+} //fin firebaseconnect
 
-function RegistraProfeData(database, PROFESOR) {
-  database
-    .ref(
-      PROFESOR.PATHHEAD + "/" + PROFESOR.TIPO + "/" + PROFESOR.Nombre_usuario
-    )
-    .set({
-      ID: PROFESOR.ID,
-      Email: PROFESOR.emails,
-      Pass: PROFESOR.pass,
-      CodeA: PROFESOR.code,
-      CONFIG_MORE: {
-        Name: PROFESOR.configMORE.Nombre,
-        Lastname: PROFESOR.configMORE.Apellido,
-        CIP: PROFESOR.configMORE.CIP,
-        Sex: PROFESOR.configMORE.Genero,
-        ID_inst: PROFESOR.configMORE.ID_INST,
-        Specialization: PROFESOR.configMORE.Especializacion,
-        DATE_START: PROFESOR.configMORE.Fecha_START
-      }
+//Data del database procedente del registro
+function readUsersData(database) {
+  return new Promise((resolve, reject)=>{
+    database.ref("students/").on("value", snapshot => {
+      const result = snapshot.val();
+       console.log(result);
+      if (result!= null)
+        return resolve(result);
+      else
+        return reject(new Error("Conexion con fuente de dato desconocida ---NO DATA---\n\n\n."));
     });
-}
-//Data del database procedente del Estudiante
-function readUsersData(callback, database, DATA) {
-  database.ref(DATA.PATHHEAD + "/" + DATA.TIPO).on("value", snapshot => {
-    const result = snapshot.val();
-    // console.log('Users_type -- ['+DATA.TIPO+']:  ', result);
-    callback(result);
   });
 }
+
+//Data del database procedente del registro
 
 function consulta_UID(uid, admin) {
   admin
@@ -173,22 +83,32 @@ function consulta_UID(uid, admin) {
     });
 }
 
-function CREA_USUARIOS_AUTENTIFICADOS(admin) {
-  admin
+function CREA_USUARIOS_AUTENTIFICADOS(admin, hot_data,firebase) {
+  var db = admin.database();
+ for (let i = 0; i < hot_data.length-1; i++) {
+    admin
     .auth()
     .createUser({
-      email: "arauzfaustino2@gmail.com", //Necesito mail
+      uid: hot_data[i][0],
+      email: hot_data[i][1].email, //Necesito mail
       emailVerified: false,
-      phoneNumber: "",
-      photoURL: "",
-      password: "secretPassword",
-      displayName: "Faustino Arauz",
+      password: hot_data[i][1].password,
+      displayName: ""+hot_data[i][1].name + " "+hot_data[i][1].lastname,
       disabled: false
     })
     .then(function(userRecord) {
-      console.log("Successfully created new user:", userRecord.uid);
+          var ref = db.ref("students/"+userRecord.uid);
+            ref.remove()
+              .then(function() {
+                console.log("Successfully created new user:", userRecord.uid);
+                firebase.auth().signInWithEmailAndPassword(hot_data[i][1].email, hot_data[i][1].password).catch(function(error) {console.log(error.message)});
+              })
+              .catch(function(error) {
+                console.log("Remove failed: " + error.message)
+              });
     })
     .catch(function(error) {
-      console.log("Error creating new user:", error);
+      console.log("ERROR: "+error.message);
     });
-}
+  }
+}//end
