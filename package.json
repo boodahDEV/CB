@@ -18,11 +18,12 @@
   },
   "homepage": "https://github.com/boodahDEV/CB#readme",
   "dependencies": {
+    "body-parser": "latest",
     "express": "latest",
     "firebase": "^6.1.1",
     "firebase-admin": "^8.1.0",
-    "body-parser": "latest",
     "firebaseui": "^4.0.0",
+    "node-schedule": "^1.3.2",
     "nodemon": "^1.19.1"
   }
 }
